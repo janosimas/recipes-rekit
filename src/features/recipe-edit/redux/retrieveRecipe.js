@@ -5,6 +5,26 @@ import {
   RECIPE_EDIT_RETRIEVE_RECIPE_DISMISS_ERROR,
 } from './constants';
 
+import * as _ from 'lodash';
+
+const getRecipeById = async (id) => {
+  // TODO: use a better route
+  const res = await fetch('http://localhost:8080/recipe/list');
+  const json = await res.json();
+  if (!_.isEmpty(json) && _.isNil(json.error)) {
+    for (const recipe of json) {
+      if (recipe.id === Number(id)) {
+        if (_.isNil(recipe.ingredients)) {
+          recipe.ingredients = [];
+        }
+        return recipe;
+      }
+    }
+  }
+
+  return undefined;
+}
+
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
 // If you prefer redux-saga, you can use rekit-plugin-redux-saga: https://github.com/supnate/rekit-plugin-redux-saga
 export function retrieveRecipe(args = {}) {
@@ -21,9 +41,10 @@ export function retrieveRecipe(args = {}) {
       // doRequest is a placeholder Promise. You should replace it with your own logic.
       // See the real-word example at:  https://github.com/supnate/rekit/blob/master/src/features/home/redux/fetchRedditReactjsList.js
       // args.error here is only for test coverage purpose.
-      const doRequest = args.error ? Promise.reject(new Error()) : Promise.resolve();
+      const doRequest = getRecipeById(args.id);
       doRequest.then(
         (res) => {
+          console.log(res);
           dispatch({
             type: RECIPE_EDIT_RETRIEVE_RECIPE_SUCCESS,
             data: res,
@@ -67,22 +88,7 @@ export function reducer(state, action) {
       // The request is success
       return {
         ...state,
-        recipe: {
-          name: 'Bolo de cenoura',
-          description: 'Como fazer um bolo...',
-          ingredients: [
-            {
-              name: 'cenoura',
-              quantity: 1,
-              unit: 'unidade'
-            },
-            {
-              name: 'açucar',
-              quantity: 500,
-              unit: 'g'
-            }
-          ],
-        },
+        recipe: action.data,
         retrieveRecipePending: false,
         retrieveRecipeError: null,
       };
@@ -91,7 +97,6 @@ export function reducer(state, action) {
       // The request is failed
       return {
         ...state,
-        recipe: null,
         retrieveRecipePending: false,
         retrieveRecipeError: action.data.error,
       };
@@ -100,7 +105,6 @@ export function reducer(state, action) {
       // Dismiss the request failure error
       return {
         ...state,
-        recipe: null,
         retrieveRecipeError: null,
       };
 

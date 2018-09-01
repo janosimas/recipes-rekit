@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Paper } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -14,18 +15,18 @@ export class Recipe extends Component {
   };
 
   componentDidMount() {
-    this.props.actions.retrieveRecipe(1);
+    this.props.actions.retrieveRecipe({ id: this.props.match.params.id });
   }
 
   render() {
     return (
-      <div className="recipe-edit-recipe">
+      <Paper className="recipe-edit-recipe">
         {this.props.recipeEdit.retrieveRecipePending ? (
           'Loading...'
         ) : _.isNil(this.props.recipeEdit.recipe) ? (
           'Recipe not found.'
         ) : (
-          <div>
+          <React.Fragment>
             <h2>{this.props.recipeEdit.recipe.name}</h2>
             <div>{this.props.recipeEdit.recipe.description}</div>
             {this.props.recipeEdit.recipe.ingredients.map((ingredient, index) => (
@@ -36,9 +37,9 @@ export class Recipe extends Component {
                 unit={ingredient.unit}
               />
             ))}
-          </div>
+          </React.Fragment>
         )}
-      </div>
+      </Paper>
     );
   }
 }
