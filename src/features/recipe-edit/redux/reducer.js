@@ -8,9 +8,11 @@
 
 import initialState from './initialState';
 import { reducer as retrieveRecipeReducer } from './retrieveRecipe';
+import { reducer as retrieveRecipeListReducer } from './retrieveRecipeList';
 
 const reducers = [
   retrieveRecipeReducer,
+  retrieveRecipeListReducer,
 ];
 
 export default function reducer(state = initialState, action) {

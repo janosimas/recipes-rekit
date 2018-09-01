@@ -9,6 +9,8 @@ const initialState = {
   retrieveRecipePending: false,
   retrieveRecipeError: null,
   recipe: null,
+  retrieveRecipeListPending: false,
+  retrieveRecipeListError: null,
 };
 
 export default initialState;

@@ -4,6 +4,7 @@
 import {
   DefaultPage,
   Recipe,
+  RecipeList,
 } from './';
 
 export default {
@@ -12,5 +13,6 @@ export default {
   childRoutes: [
     { path: 'default-page', name: 'Default page', component: DefaultPage, isIndex: true },
     { path: 'recipe/:id', name: 'Recipe', component: Recipe },
+    { path: 'list', name: 'Recipe list', component: RecipeList },
   ],
 };
