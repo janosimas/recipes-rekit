@@ -1,8 +1,8 @@
 import {
-  RECIPE_EDIT_RETRIEVE_RECIPE_LIST_BEGIN,
-  RECIPE_EDIT_RETRIEVE_RECIPE_LIST_SUCCESS,
-  RECIPE_EDIT_RETRIEVE_RECIPE_LIST_FAILURE,
-  RECIPE_EDIT_RETRIEVE_RECIPE_LIST_DISMISS_ERROR,
+  RECIPE_RETRIEVE_RECIPE_LIST_BEGIN,
+  RECIPE_RETRIEVE_RECIPE_LIST_SUCCESS,
+  RECIPE_RETRIEVE_RECIPE_LIST_FAILURE,
+  RECIPE_RETRIEVE_RECIPE_LIST_DISMISS_ERROR,
 } from './constants';
 
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
@@ -11,7 +11,7 @@ export function retrieveRecipeList(args = {}) {
   return dispatch => {
     // optionally you can have getState as the second argument
     dispatch({
-      type: RECIPE_EDIT_RETRIEVE_RECIPE_LIST_BEGIN,
+      type: RECIPE_RETRIEVE_RECIPE_LIST_BEGIN,
     });
 
     // Return a promise so that you could control UI flow without states in the store.
@@ -27,7 +27,7 @@ export function retrieveRecipeList(args = {}) {
         .then(
           res => {
             dispatch({
-              type: RECIPE_EDIT_RETRIEVE_RECIPE_LIST_SUCCESS,
+              type: RECIPE_RETRIEVE_RECIPE_LIST_SUCCESS,
               data: res,
             });
             resolve(res);
@@ -35,7 +35,7 @@ export function retrieveRecipeList(args = {}) {
           // Use rejectHandler as the second argument so that render errors won't be caught.
           err => {
             dispatch({
-              type: RECIPE_EDIT_RETRIEVE_RECIPE_LIST_FAILURE,
+              type: RECIPE_RETRIEVE_RECIPE_LIST_FAILURE,
               data: { error: err },
             });
             reject(err);
@@ -51,13 +51,13 @@ export function retrieveRecipeList(args = {}) {
 // If you don't want errors to be saved in Redux store, just ignore this method.
 export function dismissRetrieveRecipeListError() {
   return {
-    type: RECIPE_EDIT_RETRIEVE_RECIPE_LIST_DISMISS_ERROR,
+    type: RECIPE_RETRIEVE_RECIPE_LIST_DISMISS_ERROR,
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
-    case RECIPE_EDIT_RETRIEVE_RECIPE_LIST_BEGIN:
+    case RECIPE_RETRIEVE_RECIPE_LIST_BEGIN:
       // Just after a request is sent
       return {
         ...state,
@@ -65,7 +65,7 @@ export function reducer(state, action) {
         retrieveRecipeListError: null,
       };
 
-    case RECIPE_EDIT_RETRIEVE_RECIPE_LIST_SUCCESS:
+    case RECIPE_RETRIEVE_RECIPE_LIST_SUCCESS:
       // The request is success
       return {
         ...state,
@@ -74,7 +74,7 @@ export function reducer(state, action) {
         retrieveRecipeListError: null,
       };
 
-    case RECIPE_EDIT_RETRIEVE_RECIPE_LIST_FAILURE:
+    case RECIPE_RETRIEVE_RECIPE_LIST_FAILURE:
       // The request is failed
       return {
         ...state,
@@ -82,7 +82,7 @@ export function reducer(state, action) {
         retrieveRecipeListError: action.data.error,
       };
 
-    case RECIPE_EDIT_RETRIEVE_RECIPE_LIST_DISMISS_ERROR:
+    case RECIPE_RETRIEVE_RECIPE_LIST_DISMISS_ERROR:
       // Dismiss the request failure error
       return {
         ...state,

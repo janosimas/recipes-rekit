@@ -1,19 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Recipe } from '../../../src/features/recipe-edit/Recipe';
+import { RecipeList } from '../../../src/features/recipe/RecipeList';
 
-describe('recipe-edit/Recipe', () => {
+describe('recipe/RecipeList', () => {
   it('renders node with correct class name', () => {
     const props = {
       recipeEdit: {},
       actions: {},
     };
     const renderedComponent = shallow(
-      <Recipe {...props} />
+      <RecipeList {...props} />
     );
 
     expect(
-      renderedComponent.find('.recipe-edit-recipe').length
+      renderedComponent.find('.recipe-recipe-list').length
     ).toBe(1);
   });
 });

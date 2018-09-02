@@ -10,7 +10,7 @@ import Ingredient from './Ingredient';
 
 export class Recipe extends Component {
   static propTypes = {
-    recipeEdit: PropTypes.object.isRequired,
+    recipe: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -20,16 +20,16 @@ export class Recipe extends Component {
 
   render() {
     return (
-      <Paper className="recipe-edit-recipe">
-        {this.props.recipeEdit.retrieveRecipePending ? (
+      <Paper className="recipe-recipe">
+        {this.props.recipe.retrieveRecipePending ? (
           'Loading...'
-        ) : _.isNil(this.props.recipeEdit.recipe) ? (
+        ) : _.isNil(this.props.recipe.recipe) ? (
           'Recipe not found.'
         ) : (
           <React.Fragment>
-            <h2>{this.props.recipeEdit.recipe.name}</h2>
-            <div>{this.props.recipeEdit.recipe.description}</div>
-            {this.props.recipeEdit.recipe.ingredients.map((ingredient, index) => (
+            <h2>{this.props.recipe.recipe.name}</h2>
+            <div>{this.props.recipe.recipe.description}</div>
+            {this.props.recipe.recipe.ingredients.map((ingredient, index) => (
               <Ingredient
                 name={ingredient.name}
                 key={index}
@@ -47,7 +47,7 @@ export class Recipe extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    recipeEdit: state.recipeEdit,
+    recipe: state.recipe,
   };
 }
 

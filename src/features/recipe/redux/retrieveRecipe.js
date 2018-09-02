@@ -1,8 +1,8 @@
 import {
-  RECIPE_EDIT_RETRIEVE_RECIPE_BEGIN,
-  RECIPE_EDIT_RETRIEVE_RECIPE_SUCCESS,
-  RECIPE_EDIT_RETRIEVE_RECIPE_FAILURE,
-  RECIPE_EDIT_RETRIEVE_RECIPE_DISMISS_ERROR,
+  RECIPE_RETRIEVE_RECIPE_BEGIN,
+  RECIPE_RETRIEVE_RECIPE_SUCCESS,
+  RECIPE_RETRIEVE_RECIPE_FAILURE,
+  RECIPE_RETRIEVE_RECIPE_DISMISS_ERROR,
 } from './constants';
 
 import * as _ from 'lodash';
@@ -30,7 +30,7 @@ const getRecipeById = async (id) => {
 export function retrieveRecipe(args = {}) {
   return (dispatch) => { // optionally you can have getState as the second argument
     dispatch({
-      type: RECIPE_EDIT_RETRIEVE_RECIPE_BEGIN,
+      type: RECIPE_RETRIEVE_RECIPE_BEGIN,
     });
 
     // Return a promise so that you could control UI flow without states in the store.
@@ -46,7 +46,7 @@ export function retrieveRecipe(args = {}) {
         (res) => {
           console.log(res);
           dispatch({
-            type: RECIPE_EDIT_RETRIEVE_RECIPE_SUCCESS,
+            type: RECIPE_RETRIEVE_RECIPE_SUCCESS,
             data: res,
           });
           resolve(res);
@@ -54,7 +54,7 @@ export function retrieveRecipe(args = {}) {
         // Use rejectHandler as the second argument so that render errors won't be caught.
         (err) => {
           dispatch({
-            type: RECIPE_EDIT_RETRIEVE_RECIPE_FAILURE,
+            type: RECIPE_RETRIEVE_RECIPE_FAILURE,
             data: { error: err },
           });
           reject(err);
@@ -70,13 +70,13 @@ export function retrieveRecipe(args = {}) {
 // If you don't want errors to be saved in Redux store, just ignore this method.
 export function dismissRetrieveRecipeError() {
   return {
-    type: RECIPE_EDIT_RETRIEVE_RECIPE_DISMISS_ERROR,
+    type: RECIPE_RETRIEVE_RECIPE_DISMISS_ERROR,
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
-    case RECIPE_EDIT_RETRIEVE_RECIPE_BEGIN:
+    case RECIPE_RETRIEVE_RECIPE_BEGIN:
       // Just after a request is sent
       return {
         ...state,
@@ -84,7 +84,7 @@ export function reducer(state, action) {
         retrieveRecipeError: null,
       };
 
-    case RECIPE_EDIT_RETRIEVE_RECIPE_SUCCESS:
+    case RECIPE_RETRIEVE_RECIPE_SUCCESS:
       // The request is success
       return {
         ...state,
@@ -93,7 +93,7 @@ export function reducer(state, action) {
         retrieveRecipeError: null,
       };
 
-    case RECIPE_EDIT_RETRIEVE_RECIPE_FAILURE:
+    case RECIPE_RETRIEVE_RECIPE_FAILURE:
       // The request is failed
       return {
         ...state,
@@ -101,7 +101,7 @@ export function reducer(state, action) {
         retrieveRecipeError: action.data.error,
       };
 
-    case RECIPE_EDIT_RETRIEVE_RECIPE_DISMISS_ERROR:
+    case RECIPE_RETRIEVE_RECIPE_DISMISS_ERROR:
       // Dismiss the request failure error
       return {
         ...state,

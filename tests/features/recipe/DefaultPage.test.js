@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { DefaultPage } from '../../../src/features/recipe-edit/DefaultPage';
+import { DefaultPage } from '../../../src/features/recipe/DefaultPage';
 
-describe('recipe-edit/DefaultPage', () => {
+describe('recipe/DefaultPage', () => {
   it('renders node with correct class name', () => {
     const props = {
       recipeEdit: {},
@@ -13,7 +13,7 @@ describe('recipe-edit/DefaultPage', () => {
     );
 
     expect(
-      renderedComponent.find('.recipe-edit-default-page').length
+      renderedComponent.find('.recipe-default-page').length
     ).toBe(1);
   });
 });

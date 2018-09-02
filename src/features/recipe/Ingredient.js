@@ -8,13 +8,13 @@ import * as actions from './redux/actions';
 
 export class Ingredient extends Component {
   static propTypes = {
-    recipeEdit: PropTypes.object.isRequired,
+    recipe: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
   render() {
     return (
-      <div className="recipe-edit-ingredient" id={this.props.name.key}>
+      <div className="recipe-ingredient" id={this.props.name.key}>
         <TextField
           label={'Ingredient'}
           className={'ingredient-name'}
@@ -46,7 +46,7 @@ export class Ingredient extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    recipeEdit: state.recipeEdit,
+    recipe: state.recipe,
   };
 }
 

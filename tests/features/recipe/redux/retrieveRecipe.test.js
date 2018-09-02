@@ -3,22 +3,22 @@ import thunk from 'redux-thunk';
 import nock from 'nock';
 
 import {
-  RECIPE_EDIT_RETRIEVE_RECIPE_BEGIN,
-  RECIPE_EDIT_RETRIEVE_RECIPE_SUCCESS,
-  RECIPE_EDIT_RETRIEVE_RECIPE_FAILURE,
-  RECIPE_EDIT_RETRIEVE_RECIPE_DISMISS_ERROR,
-} from '../../../../src/features/recipe-edit/redux/constants';
+  RECIPE_RETRIEVE_RECIPE_BEGIN,
+  RECIPE_RETRIEVE_RECIPE_SUCCESS,
+  RECIPE_RETRIEVE_RECIPE_FAILURE,
+  RECIPE_RETRIEVE_RECIPE_DISMISS_ERROR,
+} from '../../../../src/features/recipe/redux/constants';
 
 import {
   retrieveRecipe,
   dismissRetrieveRecipeError,
   reducer,
-} from '../../../../src/features/recipe-edit/redux/retrieveRecipe';
+} from '../../../../src/features/recipe/redux/retrieveRecipe';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('recipe-edit/redux/retrieveRecipe', () => {
+describe('recipe/redux/retrieveRecipe', () => {
   afterEach(() => {
     nock.cleanAll();
   });
@@ -29,8 +29,8 @@ describe('recipe-edit/redux/retrieveRecipe', () => {
     return store.dispatch(retrieveRecipe())
       .then(() => {
         const actions = store.getActions();
-        expect(actions[0]).toHaveProperty('type', RECIPE_EDIT_RETRIEVE_RECIPE_BEGIN);
-        expect(actions[1]).toHaveProperty('type', RECIPE_EDIT_RETRIEVE_RECIPE_SUCCESS);
+        expect(actions[0]).toHaveProperty('type', RECIPE_RETRIEVE_RECIPE_BEGIN);
+        expect(actions[1]).toHaveProperty('type', RECIPE_RETRIEVE_RECIPE_SUCCESS);
       });
   });
 
@@ -40,15 +40,15 @@ describe('recipe-edit/redux/retrieveRecipe', () => {
     return store.dispatch(retrieveRecipe({ error: true }))
       .catch(() => {
         const actions = store.getActions();
-        expect(actions[0]).toHaveProperty('type', RECIPE_EDIT_RETRIEVE_RECIPE_BEGIN);
-        expect(actions[1]).toHaveProperty('type', RECIPE_EDIT_RETRIEVE_RECIPE_FAILURE);
+        expect(actions[0]).toHaveProperty('type', RECIPE_RETRIEVE_RECIPE_BEGIN);
+        expect(actions[1]).toHaveProperty('type', RECIPE_RETRIEVE_RECIPE_FAILURE);
         expect(actions[1]).toHaveProperty('data.error', expect.anything());
       });
   });
 
   it('returns correct action by dismissRetrieveRecipeError', () => {
     const expectedAction = {
-      type: RECIPE_EDIT_RETRIEVE_RECIPE_DISMISS_ERROR,
+      type: RECIPE_RETRIEVE_RECIPE_DISMISS_ERROR,
     };
     expect(dismissRetrieveRecipeError()).toEqual(expectedAction);
   });
@@ -57,7 +57,7 @@ describe('recipe-edit/redux/retrieveRecipe', () => {
     const prevState = { retrieveRecipePending: false };
     const state = reducer(
       prevState,
-      { type: RECIPE_EDIT_RETRIEVE_RECIPE_BEGIN }
+      { type: RECIPE_RETRIEVE_RECIPE_BEGIN }
     );
     expect(state).not.toBe(prevState); // should be immutable
     expect(state.retrieveRecipePending).toBe(true);
@@ -67,7 +67,7 @@ describe('recipe-edit/redux/retrieveRecipe', () => {
     const prevState = { retrieveRecipePending: true };
     const state = reducer(
       prevState,
-      { type: RECIPE_EDIT_RETRIEVE_RECIPE_SUCCESS, data: {} }
+      { type: RECIPE_RETRIEVE_RECIPE_SUCCESS, data: {} }
     );
     expect(state).not.toBe(prevState); // should be immutable
     expect(state.retrieveRecipePending).toBe(false);
@@ -77,7 +77,7 @@ describe('recipe-edit/redux/retrieveRecipe', () => {
     const prevState = { retrieveRecipePending: true };
     const state = reducer(
       prevState,
-      { type: RECIPE_EDIT_RETRIEVE_RECIPE_FAILURE, data: { error: new Error('some error') } }
+      { type: RECIPE_RETRIEVE_RECIPE_FAILURE, data: { error: new Error('some error') } }
     );
     expect(state).not.toBe(prevState); // should be immutable
     expect(state.retrieveRecipePending).toBe(false);
@@ -88,7 +88,7 @@ describe('recipe-edit/redux/retrieveRecipe', () => {
     const prevState = { retrieveRecipeError: new Error('some error') };
     const state = reducer(
       prevState,
-      { type: RECIPE_EDIT_RETRIEVE_RECIPE_DISMISS_ERROR }
+      { type: RECIPE_RETRIEVE_RECIPE_DISMISS_ERROR }
     );
     expect(state).not.toBe(prevState); // should be immutable
     expect(state.retrieveRecipeError).toBe(null);

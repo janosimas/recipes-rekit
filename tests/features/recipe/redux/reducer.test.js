@@ -1,6 +1,6 @@
-import reducer from '../../../../src/features/recipe-edit/redux/reducer';
+import reducer from '../../../../src/features/recipe/redux/reducer';
 
-describe('recipe-edit/redux/reducer', () => {
+describe('recipe/redux/reducer', () => {
   it('does nothing if no matched action', () => {
     const prevState = {};
     const state = reducer(

@@ -8,8 +8,8 @@ import {
 } from './';
 
 export default {
-  path: 'recipe-edit',
-  name: 'Recipe edit',
+  path: 'recipe',
+  name: 'Recipe',
   childRoutes: [
     { path: 'default-page', name: 'Default page', component: DefaultPage, isIndex: true },
     { path: 'recipe/:id', name: 'Recipe', component: Recipe },

@@ -3,22 +3,22 @@ import thunk from 'redux-thunk';
 import nock from 'nock';
 
 import {
-  RECIPE_EDIT_RETRIEVE_RECIPE_LIST_BEGIN,
-  RECIPE_EDIT_RETRIEVE_RECIPE_LIST_SUCCESS,
-  RECIPE_EDIT_RETRIEVE_RECIPE_LIST_FAILURE,
-  RECIPE_EDIT_RETRIEVE_RECIPE_LIST_DISMISS_ERROR,
-} from '../../../../src/features/recipe-edit/redux/constants';
+  RECIPE_RETRIEVE_RECIPE_LIST_BEGIN,
+  RECIPE_RETRIEVE_RECIPE_LIST_SUCCESS,
+  RECIPE_RETRIEVE_RECIPE_LIST_FAILURE,
+  RECIPE_RETRIEVE_RECIPE_LIST_DISMISS_ERROR,
+} from '../../../../src/features/recipe/redux/constants';
 
 import {
   retrieveRecipeList,
   dismissRetrieveRecipeListError,
   reducer,
-} from '../../../../src/features/recipe-edit/redux/retrieveRecipeList';
+} from '../../../../src/features/recipe/redux/retrieveRecipeList';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('recipe-edit/redux/retrieveRecipeList', () => {
+describe('recipe/redux/retrieveRecipeList', () => {
   afterEach(() => {
     nock.cleanAll();
   });
@@ -29,8 +29,8 @@ describe('recipe-edit/redux/retrieveRecipeList', () => {
     return store.dispatch(retrieveRecipeList())
       .then(() => {
         const actions = store.getActions();
-        expect(actions[0]).toHaveProperty('type', RECIPE_EDIT_RETRIEVE_RECIPE_LIST_BEGIN);
-        expect(actions[1]).toHaveProperty('type', RECIPE_EDIT_RETRIEVE_RECIPE_LIST_SUCCESS);
+        expect(actions[0]).toHaveProperty('type', RECIPE_RETRIEVE_RECIPE_LIST_BEGIN);
+        expect(actions[1]).toHaveProperty('type', RECIPE_RETRIEVE_RECIPE_LIST_SUCCESS);
       });
   });
 
@@ -40,15 +40,15 @@ describe('recipe-edit/redux/retrieveRecipeList', () => {
     return store.dispatch(retrieveRecipeList({ error: true }))
       .catch(() => {
         const actions = store.getActions();
-        expect(actions[0]).toHaveProperty('type', RECIPE_EDIT_RETRIEVE_RECIPE_LIST_BEGIN);
-        expect(actions[1]).toHaveProperty('type', RECIPE_EDIT_RETRIEVE_RECIPE_LIST_FAILURE);
+        expect(actions[0]).toHaveProperty('type', RECIPE_RETRIEVE_RECIPE_LIST_BEGIN);
+        expect(actions[1]).toHaveProperty('type', RECIPE_RETRIEVE_RECIPE_LIST_FAILURE);
         expect(actions[1]).toHaveProperty('data.error', expect.anything());
       });
   });
 
   it('returns correct action by dismissRetrieveRecipeListError', () => {
     const expectedAction = {
-      type: RECIPE_EDIT_RETRIEVE_RECIPE_LIST_DISMISS_ERROR,
+      type: RECIPE_RETRIEVE_RECIPE_LIST_DISMISS_ERROR,
     };
     expect(dismissRetrieveRecipeListError()).toEqual(expectedAction);
   });
@@ -57,7 +57,7 @@ describe('recipe-edit/redux/retrieveRecipeList', () => {
     const prevState = { retrieveRecipeListPending: false };
     const state = reducer(
       prevState,
-      { type: RECIPE_EDIT_RETRIEVE_RECIPE_LIST_BEGIN }
+      { type: RECIPE_RETRIEVE_RECIPE_LIST_BEGIN }
     );
     expect(state).not.toBe(prevState); // should be immutable
     expect(state.retrieveRecipeListPending).toBe(true);
@@ -67,7 +67,7 @@ describe('recipe-edit/redux/retrieveRecipeList', () => {
     const prevState = { retrieveRecipeListPending: true };
     const state = reducer(
       prevState,
-      { type: RECIPE_EDIT_RETRIEVE_RECIPE_LIST_SUCCESS, data: {} }
+      { type: RECIPE_RETRIEVE_RECIPE_LIST_SUCCESS, data: {} }
     );
     expect(state).not.toBe(prevState); // should be immutable
     expect(state.retrieveRecipeListPending).toBe(false);
@@ -77,7 +77,7 @@ describe('recipe-edit/redux/retrieveRecipeList', () => {
     const prevState = { retrieveRecipeListPending: true };
     const state = reducer(
       prevState,
-      { type: RECIPE_EDIT_RETRIEVE_RECIPE_LIST_FAILURE, data: { error: new Error('some error') } }
+      { type: RECIPE_RETRIEVE_RECIPE_LIST_FAILURE, data: { error: new Error('some error') } }
     );
     expect(state).not.toBe(prevState); // should be immutable
     expect(state.retrieveRecipeListPending).toBe(false);
@@ -88,7 +88,7 @@ describe('recipe-edit/redux/retrieveRecipeList', () => {
     const prevState = { retrieveRecipeListError: new Error('some error') };
     const state = reducer(
       prevState,
-      { type: RECIPE_EDIT_RETRIEVE_RECIPE_LIST_DISMISS_ERROR }
+      { type: RECIPE_RETRIEVE_RECIPE_LIST_DISMISS_ERROR }
     );
     expect(state).not.toBe(prevState); // should be immutable
     expect(state.retrieveRecipeListError).toBe(null);

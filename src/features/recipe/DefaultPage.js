@@ -6,13 +6,13 @@ import * as actions from './redux/actions';
 
 export class DefaultPage extends Component {
   static propTypes = {
-    recipeEdit: PropTypes.object.isRequired,
+    recipe: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
   render() {
     return (
-      <div className="recipe-edit-default-page">
+      <div className="recipe-default-page">
         Page Content: recipe-edit/DefaultPage
       </div>
     );
@@ -22,7 +22,7 @@ export class DefaultPage extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    recipeEdit: state.recipeEdit,
+    recipe: state.recipe,
   };
 }
 
