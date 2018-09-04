@@ -23,7 +23,7 @@ export class Recipe extends Component {
       <Paper className="recipe-recipe">
         {this.props.recipe.retrieveRecipePending ? (
           'Loading...'
-        ) : _.isNil(this.props.recipe.recipe) ? (
+        ) : _.isNil(this.props.recipe.recipe) || !_.isNil(this.props.recipe.retrieveRecipeError) ? (
           'Recipe not found.'
         ) : (
           <React.Fragment>

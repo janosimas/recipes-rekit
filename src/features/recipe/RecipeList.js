@@ -22,18 +22,26 @@ export class RecipeList extends Component {
       <div className="recipe-recipe-list">
         {this.props.recipe.retrieveRecipePending ? (
           'Loading...'
-        ) : _.isNil(this.props.recipe.recipes) ? (
-          'No recipe found.'
+        ) : _.isNil(this.props.recipe.recipes) ||
+        _.isEmpty(this.props.recipe.recipes) ||
+        !_.isNil(this.props.recipe.retrieveRecipeListError) ? (
+          'No recipes found.'
         ) : (
           <List>
             {this.props.recipe.recipes.map((recipe, index) => (
               <ListItem
-                    key={recipe.id}
-                    dense={true}
-                    button={true}
-                    onClick={() => this.props.history.push('/recipe/recipe/' + recipe.id)}
-                    >
-                <ListItemText primary={(<Link style={{ "fontSize": 16 }} to={'/recipe/recipe/' + recipe.id}>{recipe.name}</Link>)} />
+                key={recipe.id}
+                dense={true}
+                button={true}
+                onClick={() => this.props.history.push('/recipe/recipe/' + recipe.id)}
+              >
+                <ListItemText
+                  primary={
+                    <Link style={{ fontSize: 16 }} to={'/recipe/recipe/' + recipe.id}>
+                      {recipe.name}
+                    </Link>
+                  }
+                />
               </ListItem>
             ))}
           </List>

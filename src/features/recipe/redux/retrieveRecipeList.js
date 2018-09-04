@@ -5,6 +5,8 @@ import {
   RECIPE_RETRIEVE_RECIPE_LIST_DISMISS_ERROR,
 } from './constants';
 
+import * as _ from 'lodash';
+
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
 // If you prefer redux-saga, you can use rekit-plugin-redux-saga: https://github.com/supnate/rekit-plugin-redux-saga
 export function retrieveRecipeList(args = {}) {
@@ -19,13 +21,19 @@ export function retrieveRecipeList(args = {}) {
     // It's hard to use state to manage it, but returning a promise allows you to easily achieve it.
     // e.g.: handleSubmit() { this.props.actions.submitForm(data).then(()=> {}).catch(() => {}); }
     const promise = new Promise((resolve, reject) => {
-      // doRequest is a placeholder Promise. You should replace it with your own logic.
-      // See the real-word example at:  https://github.com/supnate/rekit/blob/master/src/features/home/redux/fetchRedditReactjsList.js
-      // args.error here is only for test coverage purpose.
-      fetch('http://localhost:8080/recipe/list')
+      fetch('http://localhost:3000/api/recipes')
         .then(res => res.json())
         .then(
           res => {
+            if (!_.isNil(res.error)) {
+              dispatch({
+                type: RECIPE_RETRIEVE_RECIPE_LIST_FAILURE,
+                data: { error: res.error },
+              });
+              reject(res.error);
+              return;
+            }
+
             dispatch({
               type: RECIPE_RETRIEVE_RECIPE_LIST_SUCCESS,
               data: res,

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
+import { RecipeList } from './RecipeList';
+import { Recipe } from './Recipe';
 
 export class DefaultPage extends Component {
   static propTypes = {
@@ -13,7 +15,8 @@ export class DefaultPage extends Component {
   render() {
     return (
       <div className="recipe-default-page">
-        Page Content: recipe-edit/DefaultPage
+        <RecipeList />
+        <Recipe />
       </div>
     );
   }
@@ -29,11 +32,11 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch)
+    actions: bindActionCreators({ ...actions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(DefaultPage);

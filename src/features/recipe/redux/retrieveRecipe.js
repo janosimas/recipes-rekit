@@ -7,28 +7,19 @@ import {
 
 import * as _ from 'lodash';
 
-const getRecipeById = async (id) => {
-  // TODO: use a better route
-  const res = await fetch('http://localhost:8080/recipe/list');
-  const json = await res.json();
-  if (!_.isEmpty(json) && _.isNil(json.error)) {
-    for (const recipe of json) {
-      if (recipe.id === Number(id)) {
-        if (_.isNil(recipe.ingredients)) {
-          recipe.ingredients = [];
-        }
-        return recipe;
-      }
-    }
-  }
+const getIngredientsByRecipeId = async id => {
+  return fetch('http://localhost:3000/api/recipes/' + id + '/ingredients').then(res => res.json());
+};
 
-  return undefined;
-}
+const getRecipeById = async id => {
+  return fetch('http://localhost:3000/api/recipes/' + id).then(res => res.json());
+};
 
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
 // If you prefer redux-saga, you can use rekit-plugin-redux-saga: https://github.com/supnate/rekit-plugin-redux-saga
 export function retrieveRecipe(args = {}) {
-  return (dispatch) => { // optionally you can have getState as the second argument
+  return dispatch => {
+    // optionally you can have getState as the second argument
     dispatch({
       type: RECIPE_RETRIEVE_RECIPE_BEGIN,
     });
@@ -38,28 +29,38 @@ export function retrieveRecipe(args = {}) {
     // It's hard to use state to manage it, but returning a promise allows you to easily achieve it.
     // e.g.: handleSubmit() { this.props.actions.submitForm(data).then(()=> {}).catch(() => {}); }
     const promise = new Promise((resolve, reject) => {
-      // doRequest is a placeholder Promise. You should replace it with your own logic.
-      // See the real-word example at:  https://github.com/supnate/rekit/blob/master/src/features/home/redux/fetchRedditReactjsList.js
-      // args.error here is only for test coverage purpose.
-      const doRequest = getRecipeById(args.id);
-      doRequest.then(
-        (res) => {
-          console.log(res);
-          dispatch({
-            type: RECIPE_RETRIEVE_RECIPE_SUCCESS,
-            data: res,
-          });
-          resolve(res);
-        },
-        // Use rejectHandler as the second argument so that render errors won't be caught.
-        (err) => {
-          dispatch({
-            type: RECIPE_RETRIEVE_RECIPE_FAILURE,
-            data: { error: err },
-          });
-          reject(err);
-        },
-      );
+      getRecipeById(args.id)
+        .then(
+          async (recipe) => {
+            if (!_.isNil(recipe.error)) {
+              dispatch({
+                type: RECIPE_RETRIEVE_RECIPE_FAILURE,
+                data: { error: recipe.error },
+              });
+              reject(recipe.error);
+              return;
+            }
+
+            let ingredients = [];
+            try {
+              ingredients = await getIngredientsByRecipeId(args.id);
+            } catch (e) {}
+            recipe.ingredients = ingredients;
+            dispatch({
+              type: RECIPE_RETRIEVE_RECIPE_SUCCESS,
+              data: recipe,
+            });
+            resolve(recipe);
+          },
+          // Use rejectHandler as the second argument so that render errors won't be caught.
+          err => {
+            dispatch({
+              type: RECIPE_RETRIEVE_RECIPE_FAILURE,
+              data: { error: err },
+            });
+            reject(err);
+          },
+        );
     });
 
     return promise;
