@@ -5,11 +5,13 @@ import {
   DefaultPage,
   Recipe,
   RecipeList,
+  Layout
 } from './';
 
 export default {
   path: 'recipe',
   name: 'Recipe',
+  component: Layout,
   childRoutes: [
     { path: 'default-page', name: 'Default page', component: DefaultPage, isIndex: true },
     { path: 'recipe/:id', name: 'Recipe', component: Recipe },

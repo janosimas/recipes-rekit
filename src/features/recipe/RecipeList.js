@@ -33,7 +33,7 @@ export class RecipeList extends Component {
                 key={recipe.id}
                 dense={true}
                 button={true}
-                onClick={() => this.props.history.push('/recipe/recipe/' + recipe.id)}
+                component={Link} to={'/recipe/recipe/' + recipe.id}
               >
                 <ListItemText
                   primary={
