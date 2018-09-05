@@ -29,9 +29,11 @@ export class RecipeList extends Component {
           'No recipes found.'
         ) : (
           <React.Fragment>
-            <IconButton>
-              <AddCircleOutline />
-            </IconButton>
+            <Link style={{ fontSize: 16 }} to={'/recipe/recipe/new'}>
+              <IconButton>
+                <AddCircleOutline />
+              </IconButton>
+            </Link>
             <List>
               {this.props.recipe.recipes.map((recipe, index) => (
                 <ListItem

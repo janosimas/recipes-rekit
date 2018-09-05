@@ -8,7 +8,17 @@ import {
 import * as _ from 'lodash';
 
 const getRecipeById = async id => {
-  return fetch('http://localhost:3000/api/recipes/' + id+'?filter[include]=ingredients').then(res => res.json());
+  if (id === String(Number(id)))
+    return fetch('http://localhost:3000/api/recipes/' + id + '?filter[include]=ingredients').then(
+      res => res.json(),
+    );
+  else
+    return {
+      name: 'Recipe Name',
+      description: 'How to make the recipe...',
+      cookingMethod: 'Cooking method',
+      ingredients: []
+    };
 };
 
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
@@ -25,33 +35,32 @@ export function retrieveRecipe(args = {}) {
     // It's hard to use state to manage it, but returning a promise allows you to easily achieve it.
     // e.g.: handleSubmit() { this.props.actions.submitForm(data).then(()=> {}).catch(() => {}); }
     const promise = new Promise((resolve, reject) => {
-      getRecipeById(args.id)
-        .then(
-          async (recipe) => {
-            if (!_.isNil(recipe.error)) {
-              dispatch({
-                type: RECIPE_RETRIEVE_RECIPE_FAILURE,
-                data: { error: recipe.error },
-              });
-              reject(recipe.error);
-              return;
-            }
-
-            dispatch({
-              type: RECIPE_RETRIEVE_RECIPE_SUCCESS,
-              data: recipe,
-            });
-            resolve(recipe);
-          },
-          // Use rejectHandler as the second argument so that render errors won't be caught.
-          err => {
+      getRecipeById(args.id).then(
+        recipe => {
+          if (!_.isNil(recipe.error)) {
             dispatch({
               type: RECIPE_RETRIEVE_RECIPE_FAILURE,
-              data: { error: err },
+              data: { error: recipe.error },
             });
-            reject(err);
-          },
-        );
+            reject(recipe.error);
+            return;
+          }
+
+          dispatch({
+            type: RECIPE_RETRIEVE_RECIPE_SUCCESS,
+            data: recipe,
+          });
+          resolve(recipe);
+        },
+        // Use rejectHandler as the second argument so that render errors won't be caught.
+        err => {
+          dispatch({
+            type: RECIPE_RETRIEVE_RECIPE_FAILURE,
+            data: { error: err },
+          });
+          reject(err);
+        },
+      );
     });
 
     return promise;

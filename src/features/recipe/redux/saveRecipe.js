@@ -36,14 +36,17 @@ const updateRecipe = recipe => {
 const updateIngredient = (recipe, ingredient) => {
   let updateRecipePromise;
   if (!_.isNil(ingredient.id)) {
-    updateRecipePromise = fetch('http://localhost:3000/api/recipes/' + recipe.id + '/ingredients/'+ingredient.id, {
-      body: JSON.stringify({
-        ...ingredient,
-        recipeId: undefined,
-      }),
-      headers: { 'Content-Type': 'application/json' },
-      method: 'put',
-    });
+    updateRecipePromise = fetch(
+      'http://localhost:3000/api/recipes/' + recipe.id + '/ingredients/' + ingredient.id,
+      {
+        body: JSON.stringify({
+          ...ingredient,
+          recipeId: undefined,
+        }),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'put',
+      },
+    );
   } else {
     updateRecipePromise = fetch('http://localhost:3000/api/recipes/' + recipe.id + '/ingredients', {
       body: JSON.stringify({
@@ -77,15 +80,19 @@ export function saveRecipe(recipe = {}) {
         .then(res => res.json())
         .then(
           res => {
-            Promise.all(
-              recipe.ingredients.map(ingredient => updateIngredient(recipe, ingredient)),
-            ).then(() => {
-              dispatch({
-                type: RECIPE_SAVE_RECIPE_SUCCESS,
-                data: res,
+            Promise.all(recipe.ingredients.map(ingredient => updateIngredient(res, ingredient)))
+              .then(ingredientsRes =>
+                Promise.all(ingredientsRes.map(ingredientRes => ingredientRes.json())),
+              )
+              .then(ingredients => {
+                console.dir(ingredients);
+                res.ingredients = ingredients;
+                dispatch({
+                  type: RECIPE_SAVE_RECIPE_SUCCESS,
+                  data: res,
+                });
+                resolve(res);
               });
-              resolve(res);
-            });
           },
           // Use rejectHandler as the second argument so that render errors won't be caught.
           err => {
@@ -124,6 +131,7 @@ export function reducer(state, action) {
       // The request is success
       return {
         ...state,
+        recipe: action.data,
         saveRecipePending: false,
         saveRecipeError: null,
       };
