@@ -15,6 +15,13 @@ export class Recipe extends Component {
     actions: PropTypes.object.isRequired,
   };
 
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.props.actions.retrieveRecipe({ id: this.props.match.params.id });
+    }
+  }
+
   componentDidMount() {
     this.props.actions.retrieveRecipe({ id: this.props.match.params.id });
   }
