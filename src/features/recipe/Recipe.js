@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Paper, IconButton } from '@material-ui/core';
-import { AddCircleOutline } from '@material-ui/icons';
+import { AddCircleOutline, Save } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -28,13 +28,16 @@ export class Recipe extends Component {
           'Recipe not found.'
         ) : (
           <React.Fragment>
-            <IconButton>
-              <AddCircleOutline />
+            <IconButton
+              className="save-recipe"
+              onClick={this.props.actions.saveRecipe.bind(this, this.props.recipe.recipe)}
+            >
+              <Save />
             </IconButton>
             <h2>{this.props.recipe.recipe.name}</h2>
             <div>{this.props.recipe.recipe.description}</div>
             <div>
-              <IconButton onClick={this.props.actions.addIngredient} className="add-ingredient" >
+              <IconButton onClick={this.props.actions.addIngredient} className="add-ingredient">
                 <AddCircleOutline />
               </IconButton>
               {this.props.recipe.recipe.ingredients.map((ingredient, index) => (

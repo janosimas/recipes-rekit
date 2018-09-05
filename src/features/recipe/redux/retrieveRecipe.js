@@ -7,12 +7,8 @@ import {
 
 import * as _ from 'lodash';
 
-const getIngredientsByRecipeId = async id => {
-  return fetch('http://localhost:3000/api/recipes/' + id + '/ingredients').then(res => res.json());
-};
-
 const getRecipeById = async id => {
-  return fetch('http://localhost:3000/api/recipes/' + id).then(res => res.json());
+  return fetch('http://localhost:3000/api/recipes/' + id+'?filter[include]=ingredients').then(res => res.json());
 };
 
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
@@ -41,11 +37,6 @@ export function retrieveRecipe(args = {}) {
               return;
             }
 
-            let ingredients = [];
-            try {
-              ingredients = await getIngredientsByRecipeId(args.id);
-            } catch (e) {}
-            recipe.ingredients = ingredients;
             dispatch({
               type: RECIPE_RETRIEVE_RECIPE_SUCCESS,
               data: recipe,

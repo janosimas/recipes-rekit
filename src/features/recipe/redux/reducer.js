@@ -12,6 +12,7 @@ import { reducer as retrieveRecipeListReducer } from './retrieveRecipeList';
 import { reducer as addIngredientReducer } from './addIngredient';
 import { reducer as removeIngredientReducer } from './removeIngredient';
 import { reducer as updateIngredientReducer } from './updateIngredient';
+import { reducer as saveRecipeReducer } from './saveRecipe';
 
 const reducers = [
   retrieveRecipeReducer,
@@ -19,6 +20,7 @@ const reducers = [
   addIngredientReducer,
   removeIngredientReducer,
   updateIngredientReducer,
+  saveRecipeReducer,
 ];
 
 export default function reducer(state = initialState, action) {

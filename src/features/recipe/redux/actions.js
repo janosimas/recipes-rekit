@@ -3,3 +3,4 @@ export { retrieveRecipeList, dismissRetrieveRecipeListError } from './retrieveRe
 export { addIngredient } from './addIngredient';
 export { removeIngredient } from './removeIngredient';
 export { updateIngredient } from './updateIngredient';
+export { saveRecipe, dismissSaveRecipeError } from './saveRecipe';
