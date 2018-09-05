@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { List, ListItem, ListItemText } from '@material-ui/core';
+import { List, ListItem, ListItemText, IconButton } from '@material-ui/core';
+import { AddCircleOutline } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -27,24 +28,30 @@ export class RecipeList extends Component {
         !_.isNil(this.props.recipe.retrieveRecipeListError) ? (
           'No recipes found.'
         ) : (
-          <List>
-            {this.props.recipe.recipes.map((recipe, index) => (
-              <ListItem
-                key={recipe.id}
-                dense={true}
-                button={true}
-                component={Link} to={'/recipe/recipe/' + recipe.id}
-              >
-                <ListItemText
-                  primary={
-                    <Link style={{ fontSize: 16 }} to={'/recipe/recipe/' + recipe.id}>
-                      {recipe.name}
-                    </Link>
-                  }
-                />
-              </ListItem>
-            ))}
-          </List>
+          <React.Fragment>
+            <IconButton>
+              <AddCircleOutline />
+            </IconButton>
+            <List>
+              {this.props.recipe.recipes.map((recipe, index) => (
+                <ListItem
+                  key={recipe.id}
+                  dense={true}
+                  button={true}
+                  component={Link}
+                  to={'/recipe/recipe/' + recipe.id}
+                >
+                  <ListItemText
+                    primary={
+                      <Link style={{ fontSize: 16 }} to={'/recipe/recipe/' + recipe.id}>
+                        {recipe.name}
+                      </Link>
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </React.Fragment>
         )}
       </div>
     );

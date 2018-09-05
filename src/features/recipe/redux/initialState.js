@@ -11,6 +11,7 @@ const initialState = {
   recipe: null,
   retrieveRecipeListPending: false,
   retrieveRecipeListError: null,
+  recipes: null,
 };
 
 export default initialState;
